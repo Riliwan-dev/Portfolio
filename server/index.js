@@ -1,11 +1,12 @@
 import express from 'express';
-import nodemailer from 'nodemailer';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { Resend } from 'resend';
 
 dotenv.config();
 
 const app = express();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Allow requests from your deployed frontend + local dev
 const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
@@ -36,20 +37,11 @@ app.post('/api/contact', async (req, res) => {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: `"Portfolio Contact Form" <${process.env.EMAIL_USER}>`,
-      replyTo: email,
+    const data = await resend.emails.send({
+      from: 'Portfolio Contact <onboarding@resend.dev>',
       to: process.env.EMAIL_USER,
+      replyTo: email,
       subject: `Portfolio Contact: ${subject}`,
-      text: `From: ${name} (${email})\n\n${message}`,
       html: `
         <div style="font-family: sans-serif; line-height: 1.6;">
           <h2>New message from your portfolio</h2>
@@ -62,7 +54,7 @@ app.post('/api/contact', async (req, res) => {
       `,
     });
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, data });
   } catch (err) {
     console.error('Email send failed:', err);
     return res.status(500).json({ error: 'Failed to send message. Please try again later.' });
