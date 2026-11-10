@@ -10,7 +10,7 @@ export const portfolioData = {
     tagline: "The Bridge Between Statistics & Code",
     roles: [
       "Software Engineer | Statistics Undergraduate",
-      "MERN Stack Specialist",
+      "Data Analyst & MERN Engineer",
       "Former Backend Intern @ NGiT",
       "FUTA Student"
     ]
