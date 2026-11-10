@@ -9,8 +9,8 @@ export const portfolioData = {
     company: "Personal Development Lab",
     tagline: "The Bridge Between Statistics & Code",
     roles: [
-      "Software Engineer | Statistics Undergraduate",
       "Data Analyst & MERN Engineer",
+      "Software Engineer | Statistics Undergraduate",
       "Former Backend Intern @ NGiT",
       "FUTA Student"
     ]
